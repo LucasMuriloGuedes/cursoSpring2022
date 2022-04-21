@@ -1,8 +1,12 @@
 package com.lucasmurilo.cursospring.config;
 
 import com.lucasmurilo.cursospring.domain.Categoria;
+import com.lucasmurilo.cursospring.domain.Cidade;
+import com.lucasmurilo.cursospring.domain.Estado;
 import com.lucasmurilo.cursospring.domain.Produto;
 import com.lucasmurilo.cursospring.repository.CategoriaRepository;
+import com.lucasmurilo.cursospring.repository.CidadeRepository;
+import com.lucasmurilo.cursospring.repository.EstadoRepository;
 import com.lucasmurilo.cursospring.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +25,12 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Autowired
+    private CidadeRepository cidadeRepository;
+
+    @Autowired
+    private EstadoRepository estadoRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -38,8 +48,25 @@ public class TestConfig implements CommandLineRunner {
         prod2.getCategorias().addAll(Arrays.asList(cat1, cat2));
         prod3.getCategorias().add(cat1);
 
+        Estado est1 = new Estado(null, "Minas Gerais");
+        Estado est2 = new Estado(null, "São Paulo");
+
+        Cidade cid1 = new Cidade(null, "Uberlândia", est1);
+        Cidade cid2 = new Cidade(null, "São Paulo", est2);
+        Cidade cid3 = new Cidade(null, "Campinas", est2);
+
+        est1.getCidades().add(cid1);
+        est2.getCidades().addAll(Arrays.asList(cid2, cid3));
+
+        estadoRepository.saveAll(Arrays.asList(est1, est2));
+        cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
+
         categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
         produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3));
+
+
+
+
 
     }
 }

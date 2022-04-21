@@ -25,4 +25,12 @@ public class CategoriaService {
         List<Categoria> list = repository.findAll();
         return list;
     }
+
+    public Categoria insert(Categoria obj){
+        Categoria newObj = new Categoria();
+        if(obj.getId() == null){
+             newObj = obj;
+        }
+        return newObj;
+    }
 }
