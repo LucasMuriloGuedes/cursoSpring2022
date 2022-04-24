@@ -1,13 +1,8 @@
 package com.lucasmurilo.cursospring.config;
 
-import com.lucasmurilo.cursospring.domain.Categoria;
-import com.lucasmurilo.cursospring.domain.Cidade;
-import com.lucasmurilo.cursospring.domain.Estado;
-import com.lucasmurilo.cursospring.domain.Produto;
-import com.lucasmurilo.cursospring.repository.CategoriaRepository;
-import com.lucasmurilo.cursospring.repository.CidadeRepository;
-import com.lucasmurilo.cursospring.repository.EstadoRepository;
-import com.lucasmurilo.cursospring.repository.ProdutoRepository;
+import com.lucasmurilo.cursospring.domain.*;
+import com.lucasmurilo.cursospring.domain.enums.TipoCliente;
+import com.lucasmurilo.cursospring.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +25,12 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private EstadoRepository estadoRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -64,9 +65,14 @@ public class TestConfig implements CommandLineRunner {
         categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
         produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3));
 
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "3535154124", TipoCliente.PESSOA_FISICA);
+        cli1.getTelefones().addAll(Arrays.asList("65981505851", "981133307"));
 
+        Endereco end1 = new Endereco(null, "Rua Flores", "300", "ap303", "Jardim", "35353535", cli1, cid1);
+        Endereco end2 = new Endereco(null, "Avenida Matos", "105", "sala 800", "Centro", "015424222", cli1, cid2);
+        cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
 
-
-
+        clienteRepository.save(cli1);
+        enderecoRepository.saveAll(Arrays.asList(end1, end2));
     }
 }
